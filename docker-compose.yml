@@ -1,0 +1,32 @@
+services:
+ mongo:
+  image: mongo:latest
+  ports:
+    - 27017:27017
+  volumes:
+    - mongodb_data_container:/data/db
+    
+ mysql:
+  image: mysql:latest
+  ports:
+    - 3306:3306
+  volumes:
+    - mysql_data_container:/var/lib/mysql
+  environment:
+   MYSQL_ROOT_PASSWORD: abc123
+    
+ car-service:
+  depends_on:
+    - mysql
+  image: lodebosmans/apt_car_service
+  ports:
+    - 9000:9000
+  links:
+    - mysql
+  environment:
+   MYSQL_DB_USERNAME: root
+   MYSQL_DB_PASSWORD: abc123
+   MYSQL_DB_HOST: mysql
+
+volumes:
+ mysql_data_container:
