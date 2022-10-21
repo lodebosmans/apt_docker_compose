@@ -31,7 +31,7 @@ services:
  apt_scan_service:
   depends_on:
     - mongo
-  image: miverboven/review-service-ex
+  image: lodebosmans/apt_scan_service
   ports:
     - 9001:9001
   links:
