@@ -41,5 +41,5 @@ services:
    MONGODB_HOST: mongo
 
 volumes:
- mysql_data_container:
  mongodb_data_container:
+ mysql_data_container: 
