@@ -15,18 +15,6 @@ services:
   environment:
    MYSQL_ROOT_PASSWORD: abc123
 
- apt_scan_service:
-  depends_on:
-    - mongo
-  image: lodebosmans/apt_scan_service
-  ports:
-    - 9001:9001
-  links:
-    - mongo
-  environment:
-   MONGODB_PORT: 27017
-   MONGODB_HOST: mongo
-
  apt_car_service:
   depends_on:
     - mysql
@@ -39,6 +27,32 @@ services:
    MYSQL_DB_USERNAME: root
    MYSQL_DB_PASSWORD: abc123
    MYSQL_DB_HOST: mysql
+
+ apt_scan_service:
+  depends_on:
+    - mongo
+  image: lodebosmans/apt_scan_service
+  ports:
+    - 9001:9001
+  links:
+    - mongo
+  environment:
+   MONGODB_PORT: 27017
+   MONGODB_HOST: mongo
+
+ apt_edge_service:
+  depends_on:
+    - apt_car_service
+    - apt_scan_service
+  image: lodebosmans/apt_edge_service
+  ports:
+    - 9002:9002
+  links:
+    - apt_car_service
+    - apt_scan_service
+  environment:
+   APT_CAR_SERVICE_BASEURL: apt_car_service:9000
+   APT_SCAN_SERVICE_BASEURL: apt_scan_service:9001
 
 volumes:
  mongodb_data_container:
